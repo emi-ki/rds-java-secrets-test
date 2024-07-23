@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'mysql:mysql-connector-java:8.0.30'
+    implementation 'com.amazonaws:aws-java-sdk-secretsmanager:1.12.382'
+    implementation 'com.amazonaws.secretsmanager.sql:aws-secretsmanager-jdbc:1.0.2'
+}
+
+application {
+    mainClass = 'com.example.RdsInfoApp' // アプリケーションのエントリポイント
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.example.RdsInfoApp' // アプリケーションのエントリポイント
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
