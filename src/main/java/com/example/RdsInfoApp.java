@@ -1,6 +1,8 @@
 package com.example;
 
 import java.sql.*;
+import java.util.Properties;
+import com.amazonaws.secretsmanager.sql.AWSSecretsManagerDriver;
 
 public class RdsInfoApp {
     public static void main(String[] args) {
