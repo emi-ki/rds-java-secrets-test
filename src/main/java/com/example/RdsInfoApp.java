@@ -13,10 +13,11 @@ public class RdsInfoApp {
             System.exit(1);
         }
 
-        // JDBC URL
-        String jdbcUrl = "jdbc-secretsmanager:mysql://database-1.colw41khta5t.ap-northeast-1.rds.amazonaws.com:3306/mysqldb" +
-                         "?serviceName=secretsmanager" +
-                         "&secretId=rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0" +
+        // JDBC URL（ホスト、ポート、データベース名を直接指定）
+        String jdbcUrl = "jdbc-secretsmanager:mysql://" +
+                         "database-1.colw41khta5t.ap-northeast-1.rds.amazonaws.com:3306" +
+                         "/mysqldb" +
+                         "?secretId=rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0" +
                          "&region=ap-northeast-1";
 
         try {
