@@ -7,11 +7,11 @@ import com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver;
 public class RdsInfoApp {
     public static void main(String[] args) {
         // エンドポイント、ポート、データベース名の設定
-        String URL = "jdbc-secretsmanager:mysql://database-1.colw41khta5t.ap-northeast-1.rds.amazonaws.com:3306/mysqldb";
+        String URL = "jdbc-secretsmanager:mysql://database-1.xxxxx.ap-northeast-1.rds.amazonaws.com:3306/<database name>";
 
         // userプロパティにsecret ARNを入力し、secretからユーザーとパスワードを取得
         Properties info = new Properties();
-        info.put("user", "rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0");
+        info.put("user", "rds!db-xxxxxxxxxxxxxxxxxxxx");
 
         System.out.println("Attempting to connect to: " + URL);
 
