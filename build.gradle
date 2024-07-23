@@ -4,18 +4,20 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://aws.oss.sonatype.org/content/repositories/snapshots"
+    }
 }
 
 dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33'
-    implementation 'com.amazonaws:aws-java-sdk-secretsmanager:1.12.540'
-    implementation 'com.amazonaws.secretsmanager.sql:aws-secretsmanager-jdbc:1.0.9'
+    implementation 'com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:2.0.2'
 }
 
 application {
