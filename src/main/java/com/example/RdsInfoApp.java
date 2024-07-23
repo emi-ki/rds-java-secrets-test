@@ -6,25 +6,18 @@ import com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver;
 
 public class RdsInfoApp {
     public static void main(String[] args) {
+        // エンドポイント、ポート、データベース名の設定
+        String URL = "jdbc-secretsmanager:mysql://database-1.colw41khta5t.ap-northeast-1.rds.amazonaws.com:3306/mysqldb";
+
+        // userプロパティにsecret ARNを入力し、secretからユーザーとパスワードを取得
+        Properties info = new Properties();
+        info.put("user", "rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0");
+
+        System.out.println("Attempting to connect to: " + URL);
+
         try {
             // Secrets Manager SQL Connection JDBC ドライバーをロード
-            try {
-
-                Class.forName("com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver").newInstance();
-            } catch (ClassNotFoundException e) {
-                System.err.println("Secrets Manager JDBC ドライバーが見つかりません。");
-                e.printStackTrace();
-                System.exit(1);
-            }
-
-            // エンドポイント、ポート、データベース名の設定
-            String URL = "jdbc-secretsmanager:mysql://database-1.colw41khta5t.ap-northeast-1.rds.amazonaws.com:3306/mysqldb";
-
-            // userプロパティにsecret ARNを入力し、secretからユーザーとパスワードを取得
-            Properties info = new Properties();
-            info.put("user", "rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0");
-
-            System.out.println("Attempting to connect to: " + URL);
+            DriverManager.registerDriver(new AWSSecretsManagerMySQLDriver());
 
             // RDS for MySQL への接続
             try (Connection connection = DriverManager.getConnection(URL, info)) {
@@ -59,7 +52,7 @@ public class RdsInfoApp {
                     }
                 }
             }
-        } catch (SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (SQLException e) {
             System.err.println("Error occurred: " + e.getMessage());
             e.printStackTrace();
         }
