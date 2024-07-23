@@ -22,6 +22,14 @@ public class RdsInfoApp {
 
         try {
             System.out.println("Attempting to connect to: " + jdbcUrl);
+
+            // デバッグ情報を追加
+            AWSSecretsManagerDriver driver = new AWSSecretsManagerDriver();
+            Properties props = driver.getSecretProperties(jdbcUrl);
+            System.out.println("Retrieved username: " + props.getProperty("user"));
+            System.out.println("Password retrieved: " + (props.getProperty("password") != null ? "Yes" : "No"));
+
+            // RDS for MySQL への接続
             Connection connection = DriverManager.getConnection(jdbcUrl);
             System.out.println("Connection successful!");
 
