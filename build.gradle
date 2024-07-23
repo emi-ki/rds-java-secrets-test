@@ -13,9 +13,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'mysql:mysql-connector-java:8.0.30'
-    implementation 'com.amazonaws:aws-java-sdk-secretsmanager:1.12.382'
-    implementation 'com.amazonaws.secretsmanager.sql:aws-secretsmanager-jdbc:1.0.2'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'com.amazonaws:aws-java-sdk-secretsmanager:1.12.540'
+    implementation 'com.amazonaws.secretsmanager.sql:aws-secretsmanager-jdbc:1.0.9'
 }
 
 application {
