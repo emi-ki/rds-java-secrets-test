@@ -16,35 +16,42 @@ public class RdsInfoApp {
         // JDBC URL
         String jdbcUrl = "jdbc-secretsmanager:mysql://database-1.colw41khta5t.ap-northeast-1.rds.amazonaws.com:3306/mysqldb" +
                          "?serviceName=secretsmanager" +
-                         "&serverName=rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0" +
+                         "&secretId=rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0" +
                          "&region=ap-northeast-1";
 
-        try (Connection connection = DriverManager.getConnection(jdbcUrl);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM age_table")) {
+        try {
+            System.out.println("Attempting to connect to: " + jdbcUrl);
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+            System.out.println("Connection successful!");
 
-            ResultSetMetaData rsmd = resultSet.getMetaData();
-            int columnsNumber = rsmd.getColumnCount();
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery("SELECT * FROM age_table")) {
 
-            System.out.println("age_table の内容:");
-            // カラム名を出力
-            for (int i = 1; i <= columnsNumber; i++) {
-                if (i > 1) System.out.print(" | ");
-                System.out.print(rsmd.getColumnName(i));
-            }
-            System.out.println();
+                ResultSetMetaData rsmd = resultSet.getMetaData();
+                int columnsNumber = rsmd.getColumnCount();
 
-            // テーブルの内容を出力
-            while (resultSet.next()) {
+                System.out.println("age_table の内容:");
+                // カラム名を出力
                 for (int i = 1; i <= columnsNumber; i++) {
                     if (i > 1) System.out.print(" | ");
-                    System.out.print(resultSet.getString(i));
+                    System.out.print(rsmd.getColumnName(i));
                 }
                 System.out.println();
+
+                // テーブルの内容を出力
+                while (resultSet.next()) {
+                    for (int i = 1; i <= columnsNumber; i++) {
+                        if (i > 1) System.out.print(" | ");
+                        System.out.print(resultSet.getString(i));
+                    }
+                    System.out.println();
+                }
             }
         } catch (SQLException e) {
             System.err.println("RDS for MySQLへの接続または操作に失敗しました。");
-            System.err.println(e.getMessage());
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
             e.printStackTrace();
             System.exit(1);
         }
