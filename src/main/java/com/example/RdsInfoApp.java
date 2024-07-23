@@ -2,7 +2,7 @@ package com.example;
 
 import java.sql.*;
 import java.util.Properties;
-import com.amazonaws.secretsmanager.sql.AWSSecretsManagerDriver;
+import com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver;
 
 public class RdsInfoApp {
     public static void main(String[] args) {
@@ -25,15 +25,13 @@ public class RdsInfoApp {
         try {
             System.out.println("Attempting to connect to: " + jdbcUrl);
 
-            // デバッグ情報を追加
-            AWSSecretsManagerDriver driver = new AWSSecretsManagerDriver();
-            Properties props = driver.getSecretProperties(jdbcUrl);
-            System.out.println("Retrieved username: " + props.getProperty("user"));
-            System.out.println("Password retrieved: " + (props.getProperty("password") != null ? "Yes" : "No"));
-
             // RDS for MySQL への接続
             Connection connection = DriverManager.getConnection(jdbcUrl);
             System.out.println("Connection successful!");
+
+            // データベースのメタデータを取得
+            DatabaseMetaData metaData = connection.getMetaData();
+            System.out.println("Connected as user: " + metaData.getUserName());
 
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery("SELECT * FROM age_table")) {
