@@ -4,7 +4,16 @@ import java.sql.*;
 
 public class RdsInfoApp {
     public static void main(String[] args) {
-        // Secrets Manager SQL Connection JDBC ドライバーを使って接続
+        // Secrets Manager SQL Connection JDBC ドライバーをロード
+        try {
+            Class.forName("com.amazonaws.secretsmanager.sql.AWSSecretsManagerMySQLDriver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Secrets Manager JDBC ドライバーが見つかりません。");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // JDBC URL
         String jdbcUrl = "jdbc-secretsmanager:mysql://database-1.colw41khta5t.ap-northeast-1.rds.amazonaws.com:3306/mysqldb" +
                          "?serviceName=secretsmanager" +
                          "&serverName=rds!db-5235e294-b7d2-47ba-8fe3-4362ea9fe7f0" +
@@ -36,6 +45,7 @@ public class RdsInfoApp {
         } catch (SQLException e) {
             System.err.println("RDS for MySQLへの接続または操作に失敗しました。");
             System.err.println(e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
     }
